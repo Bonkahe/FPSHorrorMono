@@ -5,6 +5,8 @@ Repo for the Fps horror project, with heavy focus on procedual animation, series
 
 ## Links
 
-### Youtube
+### GDScript version of this project:
+[FPSHorrorMono](https://github.com/Bonkahe/FPSHorrorGDScript)
 
+### Youtube
 [Bonkahe](https://www.youtube.com/channel/UCCF1XBU7lknM180qDhM_DvA)

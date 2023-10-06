@@ -8,18 +8,11 @@ public partial class BasicEnemyNavigationAgent : RigidBody3D
     [Export] public Node3D PlayerTarget { get; set; }
     [Export] public NavigationAgent3D NavigationAgent { get; set; }
 
-    public Vector3 DesiredVelocity { get; private set; }
-
     private Vector3 lastPlayerPosition;
     private Vector3 lastEnemyPosition;
 
     public override void _PhysicsProcess(double delta)
     {
-        if (PlayerTarget == null)
-        {
-            return;
-        }
-
         if (lastPlayerPosition.DistanceTo(PlayerTarget.GlobalPosition) > 0.5f || lastEnemyPosition.DistanceTo(GlobalPosition) > 0.5f)
         {
             lastPlayerPosition = PlayerTarget.GlobalPosition;
@@ -29,10 +22,14 @@ public partial class BasicEnemyNavigationAgent : RigidBody3D
 
         if (NavigationAgent.IsTargetReached())
         {
-            DesiredVelocity = Vector3.Zero;
+            ConstantForce = Vector3.Zero;
             return;
         }
 
-        DesiredVelocity = (NavigationAgent.GetNextPathPosition() - GlobalPosition).Normalized() * MaximumVelocity;
+        Vector3 targetVelocity = (NavigationAgent.GetNextPathPosition() - GlobalPosition).Normalized() * MaximumVelocity;
+        targetVelocity = (targetVelocity - LinearVelocity) * (VelocityChange * (float)delta);
+
+        ConstantForce = targetVelocity;
+
     }
 }

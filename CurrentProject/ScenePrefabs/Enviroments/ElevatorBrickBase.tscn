@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cx28y4wao86i8"]
+
+[ext_resource type="PackedScene" uid="uid://ouduv8pa08d1" path="res://Meshes/Enviroment/Structures/BricksElevatorBase.gltf" id="1_fvd2d"]
+[ext_resource type="Material" uid="uid://dvoiwxdh17tsu" path="res://Materials/Enviroments/ElevatorBrickBaseMat.tres" id="2_t5aw5"]
+
+[node name="BricksElevatorBase" instance=ExtResource("1_fvd2d")]
+
+[node name="BrickWallMesh" parent="." index="0"]
+lod_bias = 0.5
+surface_material_override/0 = ExtResource("2_t5aw5")

@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://cqf46tqugu5sa"]
+
+[ext_resource type="Texture2D" uid="uid://dcnmbjye736y0" path="res://Textures/Enviroment/RailCart/RustyMetalAlbedo.png" id="1_tnd6i"]
+[ext_resource type="Texture2D" uid="uid://cd330c4can25s" path="res://Textures/Enviroment/RailCart/RustyMetalNormalMap.png" id="2_4fceo"]
+[ext_resource type="Texture2D" uid="uid://clcotxnbtjn7h" path="res://Textures/Enviroment/RailCart/RustyMetalRoughness.png" id="3_exjb2"]
+
+[resource]
+albedo_texture = ExtResource("1_tnd6i")
+metallic = 0.95
+roughness_texture = ExtResource("3_exjb2")
+normal_enabled = true
+normal_scale = 2.72
+normal_texture = ExtResource("2_4fceo")
+uv1_scale = Vector3(0.765, 0.765, 0.765)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 3.36358

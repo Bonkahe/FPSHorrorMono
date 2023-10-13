@@ -1,3 +1,0 @@
-ImageTexture3D
-VisualShader
-ShaderMaterial

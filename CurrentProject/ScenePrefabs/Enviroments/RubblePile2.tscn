@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4olay5k0gafw"]
+
+[ext_resource type="PackedScene" uid="uid://rfnmcuqrrldv" path="res://Meshes/Enviroment/RubblePiles/RubblePiles2.gltf" id="1_7rgh5"]
+[ext_resource type="Material" uid="uid://ih4ddma04qlg" path="res://Materials/Enviroments/Rubble2Mat.tres" id="2_0067o"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_8btqi"]
+points = PackedVector3Array(0.838361, -0.000890464, 0.523553, -0.338206, -0.000890464, -0.864368, -0.790761, 0.0896878, 0.433152, -0.187354, 0.270726, -0.140097, 0.898853, 0.0594951, -0.472276, -0.88131, -0.000890464, -0.411832, -0.00625688, 0.0293023, 0.885867, 0.717755, 0.0896878, 0.644265, -0.368452, 0.150014, 0.644265, -0.277903, 0.0896878, -0.894679, 0.808304, -0.000890464, -0.592988, 0.0468405, 0.265692, 0.049736, -0.821007, 0.0896878, -0.441788, 0.295257, 0.0896878, -0.834412, -0.519304, 0.0293023, 0.70471, 0.385806, -0.000890464, 0.855556, 0.989401, 0.0594951, 0.0105718, 0.325503, 0.0896878, 0.855556, 0.14413, 0.246303, -0.163783, -0.941801, 0.0594951, 0.0407055, 0.385806, 0.0293023, -0.864368, 0.989401, -0.000890464, -0.200364, -0.88131, 0.0293023, 0.251996, -0.579606, 0.0594951, -0.773968, 0.717755, 0.0594951, -0.683389, -0.157108, 0.0896878, 0.855556, 0.2652, 0.119851, 0.764977, 0.0841028, -0.000890464, -0.894679, 0.989401, 0.0594951, -0.260809, -0.489058, 0.0896878, 0.70471, -0.851253, 0.0896878, 0.221862, -0.700212, 0.0293023, 0.553864)
+
+[node name="RubblePiles2" instance=ExtResource("1_7rgh5")]
+
+[node name="Rubble2" parent="." index="0"]
+lod_bias = 0.25
+surface_material_override/0 = ExtResource("2_0067o")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(11.8445, 0, 0, 0, 11.8445, 0, 0, 0, 11.8445, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_8btqi")

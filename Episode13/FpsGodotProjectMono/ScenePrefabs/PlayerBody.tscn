@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3 uid="uid://clxx6psfl5py8"]
+
+[ext_resource type="Script" path="res://Code/PlayerBodyController.cs" id="1_ihx5p"]
+[ext_resource type="PackedScene" uid="uid://cbkuu0rnihxcb" path="res://ScenePrefabs/ArmsPrefab.tscn" id="2_rc0bo"]
+[ext_resource type="PackedScene" uid="uid://b1q5ius1kk33c" path="res://ScenePrefabs/Effects/DustMotes.tscn" id="3_04eyl"]
+[ext_resource type="Texture2D" uid="uid://b1ngdud80jh3a" path="res://Textures/Arms/Flashlight_Cookie.png" id="3_nxlkg"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_q62kd"]
+frequency = 0.0999
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uioy7"]
+
+[node name="PlayerBody" type="CharacterBody3D" node_paths=PackedStringArray("GunEffects", "CameraNode", "CameraActual", "ArmsNode", "AnimationTree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.28412, 0.668381, 0)
+collision_layer = 2
+collision_mask = 9
+floor_max_angle = 1.0472
+script = ExtResource("1_ihx5p")
+GunEffects = NodePath("ArmsContainer/ArmsMesh/WeaponEffectsController")
+CameraNode = NodePath("CameraContainer")
+CameraActual = NodePath("CameraContainer/Camera3D")
+ArmsNode = NodePath("ArmsContainer")
+AnimationTree = NodePath("ArmsContainer/ArmsMesh/AnimationTree")
+HandStateMachinePlaybackPath = "parameters/playback"
+IdleAnimationName = "LowIdle"
+AimingAnimationName = "AimingIdle"
+IdleFireAnimationName = "Lowfire"
+AimingFireAnimationName = "Aimingfire"
+IdleReloadAnimationName = "Lowreload"
+AimingReloadAnimationName = "Aimingreload"
+CameraShake_Noise = SubResource("FastNoiseLite_q62kd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_uioy7")
+
+[node name="ArmsContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+
+[node name="ArmsMesh" parent="ArmsContainer" instance=ExtResource("2_rc0bo")]
+
+[node name="NewBullet" parent="ArmsContainer/ArmsMesh/Player_Rig/Skeleton3D/LeftHandItemAttachment" index="0"]
+visible = true
+
+[node name="Flashlight" parent="ArmsContainer/ArmsMesh/Player_Rig/Skeleton3D/LeftHandItemAttachment/FlashlightMesh" index="3"]
+transform = Transform3D(1, -3.76254e-07, -1.49012e-08, -8.9407e-08, 2.98023e-08, -1, 1.49012e-08, 1, 2.23517e-08, 2.38419e-07, 0.167438, 1.49012e-07)
+light_color = Color(0.94902, 0.796078, 0.682353, 1)
+light_energy = 3.0
+light_projector = ExtResource("3_nxlkg")
+
+[node name="WeaponEffectsController" parent="ArmsContainer/ArmsMesh" index="3" node_paths=PackedStringArray("CameraNode")]
+ImpactForce = 100.0
+CameraNode = NodePath("../../../CameraContainer")
+
+[node name="CameraContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraContainer"]
+current = true
+fov = 70.0
+
+[node name="DustMotes" parent="." instance=ExtResource("3_04eyl")]
+
+[connection signal="OnShotCameraImpulse" from="ArmsContainer/ArmsMesh/WeaponEffectsController" to="." method="ImpulseCameraWithRecoil"]
+
+[editable path="ArmsContainer/ArmsMesh"]
+[editable path="ArmsContainer/ArmsMesh/Player_Rig/Skeleton3D/LeftHandItemAttachment/FlashlightMesh"]

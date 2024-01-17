@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Xr4cEXAUB3oopugfZWAm/2rZjziwQ6kxYDcv0dmvQEi9XD+oqjICZ036Pq2MfDZjrGMA21WCqBWAQ0xbakRwnQ==",
+  "dgSpecHash": "pSJ5YYtjLjOusSWCHkmDRjN6dhkqRZm1INv4DGhTg0UhgQ/gBgvn+mvXFZpSVa9FYCIH8sJCXhiEvz/qq8hrNQ==",
   "success": true,
-  "projectFilePath": "F:\\Workspace-Backedup\\GodotProjects\\1-Educational\\ProcAnimShooter\\FpsGodotProjectMono\\FpsGodotProject.csproj",
+  "projectFilePath": "F:\\Workspace-Backedup\\GodotProjects\\1-Educational\\ProcAnimShooter\\MonoGithubFolder\\FPSHorrorMono\\CurrentProject\\FpsGodotProject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bonka\\.nuget\\packages\\godot.sourcegenerators\\4.1.0\\godot.sourcegenerators.4.1.0.nupkg.sha512",
     "C:\\Users\\bonka\\.nuget\\packages\\godotsharp\\4.1.0\\godotsharp.4.1.0.nupkg.sha512",

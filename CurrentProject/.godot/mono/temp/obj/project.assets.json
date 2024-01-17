@@ -94,11 +94,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\WORKSPACE-BACKEDUP\\GODOTPROJECTS\\1-EDUCATIONAL\\PROCANIMSHOOTER\\FPSGODOTPROJECTMONO\\FpsGodotProject.csproj",
+      "projectUniqueName": "F:\\Workspace-Backedup\\GodotProjects\\1-Educational\\ProcAnimShooter\\MonoGithubFolder\\FPSHorrorMono\\CurrentProject\\FpsGodotProject.csproj",
       "projectName": "FpsGodotProject",
-      "projectPath": "F:\\WORKSPACE-BACKEDUP\\GODOTPROJECTS\\1-EDUCATIONAL\\PROCANIMSHOOTER\\FPSGODOTPROJECTMONO\\FpsGodotProject.csproj",
+      "projectPath": "F:\\Workspace-Backedup\\GodotProjects\\1-Educational\\ProcAnimShooter\\MonoGithubFolder\\FPSHorrorMono\\CurrentProject\\FpsGodotProject.csproj",
       "packagesPath": "C:\\Users\\bonka\\.nuget\\packages\\",
-      "outputPath": "F:\\WORKSPACE-BACKEDUP\\GODOTPROJECTS\\1-EDUCATIONAL\\PROCANIMSHOOTER\\FPSGODOTPROJECTMONO\\.godot\\mono\\temp\\obj\\",
+      "outputPath": "F:\\Workspace-Backedup\\GodotProjects\\1-Educational\\ProcAnimShooter\\MonoGithubFolder\\FPSHorrorMono\\CurrentProject\\.godot\\mono\\temp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "F:\\Workspace-Backedup\\GodotProjects\\0-GodotEditor\\EngineCache\\Godot_v4.0.3-stable_mono_win64\\editor_data\\mono\\GodotNuGetFallbackFolder"

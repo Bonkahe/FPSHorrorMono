@@ -1,0 +1,178 @@
+[gd_scene load_steps=11 format=3 uid="uid://j3wkv2enaxu4"]
+
+[ext_resource type="PackedScene" uid="uid://dfvup7v6vwpjx" path="res://ScenePrefabs/Enemies/CultistBody.tscn" id="1_jrwgq"]
+[ext_resource type="Script" path="res://Code/Enemies/EnemyAIController.cs" id="1_vlbcb"]
+[ext_resource type="PackedScene" uid="uid://ddenord6ope2m" path="res://ScenePrefabs/Enemies/CultistRagdoll.tscn" id="2_3ktpy"]
+[ext_resource type="Script" path="res://Code/Enemies/BasicEnemyNavigationAgent.cs" id="2_p71tf"]
+[ext_resource type="Script" path="res://Code/Enemies/DamageableObject.cs" id="3_mn57c"]
+[ext_resource type="PackedScene" uid="uid://cfgwxv8foypvp" path="res://ScenePrefabs/Effects/ImpactEffectEnemy.tscn" id="4_hufux"]
+[ext_resource type="Script" path="res://Code/Enemies/LimbPlacementController.cs" id="5_agwod"]
+[ext_resource type="Script" path="res://Code/Enemies/Limb.cs" id="6_7ckyj"]
+[ext_resource type="PackedScene" uid="uid://j77k7mguihs6" path="res://ScenePrefabs/PointofInterest.tscn" id="8_f1j4f"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_iqvbu"]
+radius = 1.2
+
+[node name="Cultist" type="Node3D" node_paths=PackedStringArray("NavigationAgent", "LimbController", "BaseSkeleton")]
+script = ExtResource("1_vlbcb")
+NavigationAgent = NodePath("RollerBall")
+LimbController = NodePath("LimbPlacementController")
+MinimumAttackDelay = 1.5
+MaximumAttackDelay = 4.0
+AttackInitiateDistance = 6.0
+AttackForce = 30.0
+MaxHealth = 1.0
+BaseSkeleton = NodePath("CultistBody/CultistRig/Skeleton3D")
+RagdollScene = ExtResource("2_3ktpy")
+
+[node name="CultistBody" parent="." instance=ExtResource("1_jrwgq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.38419e-07, -7.45058e-09)
+
+[node name="CultistEyesMesh" parent="CultistBody/CultistRig/Skeleton3D" index="0"]
+instance_shader_parameters/DissolveWeight = -0.1
+
+[node name="CultistMesh" parent="CultistBody/CultistRig/Skeleton3D" index="1"]
+instance_shader_parameters/DissolveWeight = -0.1
+
+[node name="Chest" parent="CultistBody/CultistRig/Skeleton3D" index="2"]
+transform = Transform3D(1, 0, 0, 0, 0.850691, 0.525643, 0, -0.525643, 0.850691, 0, 1.9419, -0.0829246)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.29364e-05, 0.0011151)
+body_offset = Transform3D(1, 0, 0, 0, 0.865357, 0.501133, 0, -0.501133, 0.865357, 0, -0.00052166, -0.000986479)
+
+[node name="Hand_R_IK" parent="CultistBody/CultistRig/Skeleton3D" index="3"]
+target_node = NodePath("../../../../RightHandTargetContainer/Hand_R_Target")
+
+[node name="Hand_L_IK" parent="CultistBody/CultistRig/Skeleton3D" index="4"]
+target_node = NodePath("../../../../LeftHandTargetContainer/Hand_L_Target")
+
+[node name="Foot_R_IK" parent="CultistBody/CultistRig/Skeleton3D" index="5"]
+target_node = NodePath("../../../../RightFootTargetContainer/Foot_R_Target")
+
+[node name="Foot_L_IK" parent="CultistBody/CultistRig/Skeleton3D" index="6"]
+target_node = NodePath("../../../../LeftFootTargetContainer/Foot_L_Target")
+
+[node name="Head_IK" parent="CultistBody/CultistRig/Skeleton3D" index="7"]
+target_node = NodePath("../../../../HeadMarkerContainer/HeadTarget")
+
+[node name="RollerBall" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.998388, 0.0567625, 0, -0.0567625, 0.998388, 0, 0, 0)
+collision_layer = 8
+collision_mask = 9
+mass = 2.0
+gravity_scale = 1.12
+angular_damp = 0.5
+script = ExtResource("2_p71tf")
+MaximumVelocity = 3.0
+VelocityChange = 6.0
+WorldCollision = 1
+ChanceOfUpPath = 0.3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RollerBall"]
+transform = Transform3D(0.695005, 0, 0, 0, 0.695005, 0, 0, 0, 0.695005, 0, 0, 0)
+shape = SubResource("SphereShape3D_iqvbu")
+
+[node name="Damageable" type="Node" parent="RollerBall"]
+script = ExtResource("3_mn57c")
+ImpactEffect = ExtResource("4_hufux")
+
+[node name="LimbPlacementController" type="Node" parent="." node_paths=PackedStringArray("Skeleton", "ChestBone", "HeadIKSolver", "ChestTargetPoint", "ChestTargetContainer", "HeadTargetContainer", "EnemyAIController", "EnemyBody", "LimbRaycast", "CurrentLimbs")]
+script = ExtResource("5_agwod")
+Skeleton = NodePath("../CultistBody/CultistRig/Skeleton3D")
+ChestBone = NodePath("../CultistBody/CultistRig/Skeleton3D/Chest")
+HeadIKSolver = NodePath("../CultistBody/CultistRig/Skeleton3D/Head_IK")
+ChestTargetPoint = NodePath("../ChestMarkerContainer/ChestTarget")
+ChestTargetContainer = NodePath("../ChestMarkerContainer")
+HeadTargetContainer = NodePath("../HeadMarkerContainer")
+EnemyAIController = NodePath("..")
+EnemyBody = NodePath("../RollerBall")
+LimbRaycast = NodePath("../LimbPlacementRaycast")
+CurrentLimbs = [NodePath("../LeftHand_Limb"), NodePath("../RightHand_Limb"), NodePath("../LeftFoot_Limb"), NodePath("../RightFoot_Limb")]
+
+[node name="RightHand_Limb" type="Node" parent="." node_paths=PackedStringArray("LimbIKContainer", "Skeleton", "LimbIKSolver")]
+script = ExtResource("6_7ckyj")
+LimbIKContainer = NodePath("../RightHandTargetContainer")
+Skeleton = NodePath("../CultistBody/CultistRig/Skeleton3D")
+LimbIKSolver = NodePath("../CultistBody/CultistRig/Skeleton3D/Hand_R_IK")
+LimbIKMagnetOffset = Vector3(1, 1, 0.5)
+LimbIKTargetOffset = Vector3(0, 0.1, 0)
+ThisLimb = 1
+
+[node name="LeftHand_Limb" type="Node" parent="." node_paths=PackedStringArray("LimbIKContainer", "Skeleton", "LimbIKSolver")]
+script = ExtResource("6_7ckyj")
+LimbIKContainer = NodePath("../LeftHandTargetContainer")
+Skeleton = NodePath("../CultistBody/CultistRig/Skeleton3D")
+LimbIKSolver = NodePath("../CultistBody/CultistRig/Skeleton3D/Hand_L_IK")
+LimbIKMagnetOffset = Vector3(-1, 1, 0.5)
+LimbIKTargetOffset = Vector3(0, 0.1, 0)
+
+[node name="RightFoot_Limb" type="Node" parent="." node_paths=PackedStringArray("LimbIKContainer", "Skeleton", "LimbIKSolver")]
+script = ExtResource("6_7ckyj")
+LimbIKContainer = NodePath("../RightFootTargetContainer")
+Skeleton = NodePath("../CultistBody/CultistRig/Skeleton3D")
+LimbIKSolver = NodePath("../CultistBody/CultistRig/Skeleton3D/Foot_R_IK")
+LimbIKMagnetOffset = Vector3(1, 0.5, -1)
+LimbIKTargetOffset = Vector3(0, 0.15, 0)
+EnemyBodyDesiredVelocityBias = 0.9
+ThisLimb = 3
+TargetPointOffsetMinimumDistance = 0.4
+ControlPointOffset = 0.25
+BlendSpeed = 4.5
+
+[node name="LeftFoot_Limb" type="Node" parent="." node_paths=PackedStringArray("LimbIKContainer", "Skeleton", "LimbIKSolver")]
+script = ExtResource("6_7ckyj")
+LimbIKContainer = NodePath("../LeftFootTargetContainer")
+Skeleton = NodePath("../CultistBody/CultistRig/Skeleton3D")
+LimbIKSolver = NodePath("../CultistBody/CultistRig/Skeleton3D/Foot_L_IK")
+LimbIKMagnetOffset = Vector3(-1, 0.5, -1)
+LimbIKTargetOffset = Vector3(0, 0.15, 0)
+EnemyBodyDesiredVelocityBias = 0.9
+ThisLimb = 2
+TargetPointOffsetMinimumDistance = 0.4
+ControlPointOffset = 0.25
+BlendSpeed = 4.5
+
+[node name="LimbPlacementRaycast" type="RayCast3D" parent="."]
+
+[node name="ChestMarkerContainer" type="Marker3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 8.74228e-08, -4.37114e-08, -1, -3.82137e-15, -1, 4.37114e-08, 0, 0, 0)
+
+[node name="ChestTarget" type="Node3D" parent="ChestMarkerContainer"]
+transform = Transform3D(-1, 8.74217e-08, 0, 3.82137e-15, 4.37109e-08, -0.999988, -8.74228e-08, -0.999988, -4.37109e-08, 0, 0, 0)
+
+[node name="FlashlightPoint" parent="ChestMarkerContainer" instance=ExtResource("8_f1j4f")]
+priority = 3
+
+[node name="HeadMarkerContainer" type="Marker3D" parent="."]
+transform = Transform3D(-1, 8.74228e-08, 3.28405e-15, 8.74228e-08, 1, -1.06581e-14, -7.10543e-15, -1.06581e-14, -1, 0, 0, 0)
+
+[node name="HeadTarget" type="Node3D" parent="HeadMarkerContainer"]
+transform = Transform3D(-1, 3.50013e-29, -8.74217e-08, 9.31761e-22, 0.999988, 8.47033e-21, 8.74228e-08, 6.77626e-21, -0.999988, -1.45482e-07, -1.69407e-21, -1.66412)
+
+[node name="RightHandTargetContainer" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.999988, 0, 0, 0, 0.999988, 0, 0, 0)
+
+[node name="Hand_R_Target" type="Node3D" parent="RightHandTargetContainer"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="LeftHandTargetContainer" type="Marker3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -0.999988, 0, 0.999988, 0, 1, 0, -4.37109e-08, 0, 0, 0)
+
+[node name="Hand_L_Target" type="Node3D" parent="LeftHandTargetContainer"]
+transform = Transform3D(1.91069e-15, -4.37112e-08, 1, -1, -4.37112e-08, 0, 4.37115e-08, -0.999995, -4.37115e-08, 0, 0, 0)
+
+[node name="RightFootTargetContainer" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.999998, 0, 0, 0, 0.999998, 0, 0, 0)
+
+[node name="Foot_R_Target" type="Node3D" parent="RightFootTargetContainer"]
+transform = Transform3D(-4.37114e-08, -0.766044, 0.642788, 0, -0.642788, -0.766044, 1, -3.34849e-08, 2.80971e-08, 0, 0, 0)
+
+[node name="LeftFootTargetContainer" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.999998, 0, 0, 0, 0.999998, 0, 0, 0)
+
+[node name="Foot_L_Target" type="Node3D" parent="LeftFootTargetContainer"]
+transform = Transform3D(-4.37114e-08, 0.766044, -0.642788, 0, -0.642788, -0.766044, -1, -3.34849e-08, 2.80971e-08, 0, 0, 0)
+
+[connection signal="LaunchRequest" from="RollerBall" to="LimbPlacementController" method="OnLaunchRequested"]
+[connection signal="OnDamage" from="RollerBall/Damageable" to="." method="OnDamaged"]
+
+[editable path="CultistBody"]

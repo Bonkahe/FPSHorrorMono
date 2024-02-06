@@ -16,6 +16,14 @@ public partial class EnemyAIController : Node3D
     [Export] public BasicEnemyNavigationAgent NavigationAgent { get; private set; }
     [Export] public Node3D CurrentTarget { get; private set; }
 
+    [ExportCategory("Attack Settings")]
+    [Export] public LimbPlacementController LimbController { get; private set; }
+    [Export] public float MinimumAttackDelay { get; private set; } = 1.5f;
+    [Export] public float MaximumAttackDelay { get; private set; } = 4.0f;
+    [Export] public float AttackInitiateDistance { get; private set; } = 6.0f;
+    [Export] public float AttackDamageDistance { get; private set; } = 2.0f;
+    [Export] public float AttackForce { get; private set; } = 30.0f;
+
 
     [ExportCategory("Health Settings")]
     [Export] public float MaxHealth { get; private set; } = 2.0f;
@@ -36,9 +44,25 @@ public partial class EnemyAIController : Node3D
 
     private Vector3 LastTargetPosition = Vector3.Zero;
 
+    private float AttackCooldown;
+    private bool IsAttacking;
+
     public override void _Ready()
     {
         CurrentHealth = MaxHealth;
+    }
+
+    public void OnAttackSuccessful()
+    {
+
+    }
+
+    private void ResetAttackCooldown()
+    {
+        RandomNumberGenerator rng = new RandomNumberGenerator();
+        rng.Randomize();
+        AttackCooldown = rng.RandfRange(MinimumAttackDelay, MaximumAttackDelay);
+        IsAttacking = false;
     }
 
     /// <summary>
@@ -166,7 +190,6 @@ public partial class EnemyAIController : Node3D
     {
         if (CurrentTarget != null && !overrideAggro)
         {
-
             return;
         }
 
@@ -174,8 +197,57 @@ public partial class EnemyAIController : Node3D
         TargetOverwritten = true;
     }
 
+    /// <summary>
+    /// Takes a node and checks if it has a damageable node and apply damage and force to itself.
+    /// </summary>
+    /// <returns>Whether the object was in fact damaged.</returns>
+    private bool AttackTarget(Node3D parentNode)
+    {
+        Node damageable = parentNode.GetNode("Damageable");
+        if (damageable != null && damageable is DamageableObject damageableObject) 
+        {
+            damageableObject.HitObject(NavigationAgent.GlobalPosition, (parentNode.GlobalPosition - NavigationAgent.GlobalPosition).Normalized() * AttackForce, this);
+
+            Vector3 bounceVector = (NavigationAgent.GlobalPosition - parentNode.GlobalPosition).Normalized() * AttackForce * 2.0f;
+            SetPathingTarget(NavigationAgent.GlobalPosition + bounceVector);
+            NavigationAgent.ApplyImpulse(bounceVector);
+            return true;
+        }
+        return false;
+    }
+
     public override void _Process(double delta)
     {
+        if (AttackCooldown > 0)
+        {
+            AttackCooldown = Mathf.Max(AttackCooldown - (float)delta, 0);
+        }
+
+        if (IsAttacking)
+        {
+            if (CurrentTarget == null)
+            {
+                IsAttacking = false;
+                return;
+            }
+
+            if (CurrentTarget.GlobalPosition.DistanceTo(NavigationAgent.GlobalPosition) <= AttackDamageDistance)
+            {
+                ResetAttackCooldown();
+                AttackTarget(CurrentTarget);
+            }
+
+            //We have spent too long trying to attack
+            if (AttackCooldown == 0)
+            {
+                IsAttacking = false;
+            }
+            else
+            {
+                return;
+            }
+        }
+
         /// Handle pathing override (Later will be used for in combat pathing, and cinematic overrides)
 		if (TargetOverwritten)
         {
@@ -201,6 +273,14 @@ public partial class EnemyAIController : Node3D
             {
                 LastTargetPosition = CurrentTarget.GlobalPosition;
                 NavigationAgent.SetNewTarget(LastTargetPosition);
+            }
+
+            if (AttackCooldown == 0 && CurrentTarget.GlobalPosition.DistanceTo(NavigationAgent.GlobalPosition) < AttackInitiateDistance && !LimbController.LaunchingRequested)
+            {
+                LimbController.OnAttackLaunchRequested(CurrentTarget);
+                NavigationAgent.SetNewTarget(CurrentTarget.GlobalPosition);
+                IsAttacking = true;
+                AttackCooldown = (CurrentTarget.GlobalPosition.DistanceTo(NavigationAgent.GlobalPosition) / (NavigationAgent.MaximumVelocity * LimbController.LaunchVelocityMultiplier)) * 2.0f;
             }
 
             return;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://cbkuu0rnihxcb"]
+[gd_scene load_steps=47 format=3 uid="uid://cbkuu0rnihxcb"]
 
 [ext_resource type="PackedScene" uid="uid://d08ah0fmlc5wc" path="res://Meshes/Arms/ArmsMesh.gltf" id="1_lp6ue"]
 [ext_resource type="Material" uid="uid://pqw3t2jxpeep" path="res://Materials/ArmsMaterial.tres" id="2_ibi88"]
@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dimdc1rlrdvl3" path="res://ScenePrefabs/BulletPrefab.tscn" id="4_5i7t5"]
 [ext_resource type="PackedScene" uid="uid://frql06aoqf20" path="res://ScenePrefabs/FlashlightPrefab.tscn" id="5_xluow"]
 [ext_resource type="Script" path="res://Code/WeaponEffectsController.cs" id="7_e4vh2"]
+[ext_resource type="Material" uid="uid://c71bmiyt83wix" path="res://Materials/FlashlightLensMaterial.tres" id="7_tlskv"]
 [ext_resource type="PackedScene" uid="uid://d3qcyvkf063xn" path="res://ScenePrefabs/Effects/MuzzleFlashEffect.tscn" id="8_c72c3"]
-[ext_resource type="Material" uid="uid://c71bmiyt83wix" path="res://Materials/FlashlightLensMaterial.tres" id="8_p0vxn"]
 [ext_resource type="Animation" uid="uid://b0ygxxvv31ete" path="res://Meshes/Animations/Arms_Aimingfire.res" id="9_0wo4y"]
 [ext_resource type="PackedScene" uid="uid://b45k0vk8fn0n8" path="res://ScenePrefabs/Effects/ImpactEffect.tscn" id="9_ufdo5"]
 [ext_resource type="Animation" uid="uid://b0nnex2amp1qy" path="res://Meshes/Animations/Arms_Aimingidle.res" id="10_0elmm"]
@@ -18,6 +18,10 @@
 [ext_resource type="Animation" uid="uid://mkomdjue2orp" path="res://Meshes/Animations/Arms_LowIdle.res" id="14_x68wh"]
 [ext_resource type="Animation" uid="uid://dop4x21hkored" path="res://Meshes/Animations/Arms_Lowreload.res" id="15_8uf5r"]
 [ext_resource type="Animation" uid="uid://dtmerytwaa0g7" path="res://Meshes/Animations/Arms_LowtoAiming.res" id="16_mn678"]
+[ext_resource type="AudioStream" uid="uid://cbnni6ypf41ep" path="res://Audio/Player/PC_GunShot_1.wav" id="16_s17uy"]
+[ext_resource type="AudioStream" uid="uid://brg7abpl2obiq" path="res://Audio/Player/PC_GunShot_2.wav" id="17_fhwj5"]
+[ext_resource type="AudioStream" uid="uid://bj3vm3n3kejm1" path="res://Audio/Player/PC_GunShot_3.wav" id="18_l1ysc"]
+[ext_resource type="AudioStream" uid="uid://xx7iju47nqq" path="res://Audio/Player/ReloadAudio.mp3" id="23_xd5pw"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i25ty"]
 _data = {
@@ -268,7 +272,7 @@ magnet = Vector3(-1, -1, 0)
 target_node = NodePath("../../../LeftIKMarkerIdleContainer/LeftHand_IKTarget")
 
 [node name="RevolverBarrelAttachment" type="BoneAttachment3D" parent="Player_Rig/Skeleton3D" index="14"]
-transform = Transform3D(0.99989, 0.0143319, -0.00384878, -0.0143209, 0.999893, 0.00288108, 0.00388987, -0.00282595, 0.999988, 0.190275, -0.207155, -0.657797)
+transform = Transform3D(0.99989, 0.0143311, -0.00384841, -0.0143201, 0.999893, 0.00288072, 0.00388946, -0.00282556, 0.999988, 0.190275, -0.207155, -0.657797)
 bone_name = "RevolverFront"
 bone_idx = 30
 
@@ -278,7 +282,7 @@ target_position = Vector3(0, 0, -1000)
 collision_mask = 9
 
 [node name="RevolverCylinderAttachment" type="BoneAttachment3D" parent="Player_Rig/Skeleton3D" index="15"]
-transform = Transform3D(0.99989, -0.00384927, -0.0143314, -0.0143204, 0.00288144, -0.999893, 0.00389037, 0.999988, 0.0028263, 0.190494, -0.18648, -0.637994)
+transform = Transform3D(0.99989, -0.0038489, -0.0143306, -0.0143196, 0.00288109, -0.999893, 0.00388995, 0.999988, 0.00282592, 0.190494, -0.18648, -0.637994)
 bone_name = "RevolverPushPin"
 bone_idx = 31
 
@@ -301,7 +305,7 @@ transform = Transform3D(-1, 0, 1.49012e-07, 7.45058e-08, 1, -2.98023e-08, -5.960
 transform = Transform3D(-1, 0, 1.49012e-07, 7.45058e-08, 1, -2.98023e-08, -5.96046e-08, 0, -1, 0.012, 0.054, -0.007)
 
 [node name="LeftHandItemAttachment" type="BoneAttachment3D" parent="Player_Rig/Skeleton3D" index="16"]
-transform = Transform3D(0.906764, 0.268, -0.325509, 0.336878, 0.0037722, 0.941541, 0.253561, -0.963411, -0.0868628, -0.288682, -0.452939, -0.307122)
+transform = Transform3D(0.906763, 0.268001, -0.325508, 0.336878, 0.003773, 0.941541, 0.253562, -0.963411, -0.0868624, -0.288682, -0.452939, -0.307122)
 bone_name = "ReloaderBone"
 bone_idx = 23
 
@@ -316,7 +320,7 @@ transform = Transform3D(1, 0, 2.6077e-08, -1.49012e-08, 1, 1.49012e-08, -4.47035
 cast_shadow = 0
 
 [node name="FlashlightBodyLensLP" parent="Player_Rig/Skeleton3D/LeftHandItemAttachment/FlashlightMesh" index="1"]
-surface_material_override/0 = ExtResource("8_p0vxn")
+surface_material_override/0 = ExtResource("7_tlskv")
 
 [node name="FlashlightBodyLP" parent="Player_Rig/Skeleton3D/LeftHandItemAttachment/FlashlightMesh" index="2"]
 cast_shadow = 0
@@ -343,6 +347,7 @@ active = true
 
 [node name="WeaponEffectsController" type="Node" parent="." index="3" node_paths=PackedStringArray("BarrelEnd", "BarrelRayCast", "RightHandIKSolver", "LeftHandIKSolver", "AimingIKContainer", "RightHandIdleIKContainer", "LeftHandIdleIKContainer", "RightHandIdleIKTarget", "RightHandAimingIKTarget", "LeftHandIdleIKTarget", "LeftHandAimingIKTarget")]
 script = ExtResource("7_e4vh2")
+GunshotSounds = [ExtResource("16_s17uy"), ExtResource("17_fhwj5"), ExtResource("18_l1ysc")]
 BarrelEnd = NodePath("../Player_Rig/Skeleton3D/RevolverBarrelAttachment/RevolverRaycast")
 BarrelRayCast = NodePath("../Player_Rig/Skeleton3D/RevolverBarrelAttachment/RevolverRaycast")
 MuzzleFlash = ExtResource("8_c72c3")
@@ -380,5 +385,10 @@ transform = Transform3D(0.990064, -0.0472875, 0.132425, -0.135294, -0.0637428, 0
 
 [node name="A_LeftHand_IKTarget" type="Node3D" parent="AimingIKMarkerContainer" index="1"]
 transform = Transform3D(0.151951, 0.985703, -0.0728098, -0.902859, 0.10845, -0.416033, -0.402189, 0.128954, 0.90643, 0.0334887, -0.146891, 0.233092)
+
+[node name="ReloadAudio" type="AudioStreamPlayer" parent="." index="7"]
+stream = ExtResource("23_xd5pw")
+volume_db = 5.0
+bus = &"PlayerEffects"
 
 [editable path="Player_Rig/Skeleton3D/LeftHandItemAttachment/FlashlightMesh"]

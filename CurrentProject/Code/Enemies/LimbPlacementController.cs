@@ -6,6 +6,9 @@ using System.Linq;
 public enum LimbReference { LeftHand, RightHand, LeftFoot, RightFoot }
 public partial class LimbPlacementController : Node
 {
+    [Export] public Array<AudioStream> FootstepSounds { get; set; } = new Array<AudioStream>();
+    [Export] public Array<AudioStream> JumpSounds { get; set; } = new Array<AudioStream>();
+
     [Export] public Skeleton3D Skeleton { get; set; }
     [Export] public PhysicalBone3D ChestBone { get; set; }
     [Export] public SkeletonIK3D HeadIKSolver { get; set; }
@@ -159,6 +162,11 @@ public partial class LimbPlacementController : Node
 
         EnemyBody.ApplyImpulse(requestedVelocity);
         LaunchingRequested = false;
+
+        if (FootstepSounds.Count > 0)
+        {
+            GetTree().CallGroup("AudioQues", "PlayAudioQue3D", FootstepSounds[new RandomNumberGenerator().RandiRange(0, FootstepSounds.Count - 1)], EnemyBody.GlobalPosition, 5);
+        }
     }
 
     public async void OnAttackLaunchRequested(Node3D target)
@@ -186,10 +194,20 @@ public partial class LimbPlacementController : Node
 
         EnemyBody.ApplyImpulse(requestedVelocity);
         LaunchingRequested = false;
+
+        if (JumpSounds.Count > 0)
+        {
+            GetTree().CallGroup("AudioQues", "PlayAudioQue3D", JumpSounds[new RandomNumberGenerator().RandiRange(0, JumpSounds.Count - 1)], EnemyBody.GlobalPosition, 0);
+        }
     }
 
     public void KickOffVelocity(Vector3 DesiredDirection, Vector3 targetPoint)
     {
+        if (FootstepSounds.Count > 0)
+        {
+            GetTree().CallGroup("AudioQues", "PlayAudioQue3D", FootstepSounds[new RandomNumberGenerator().RandiRange(0, FootstepSounds.Count - 1)], targetPoint, -5);
+        }
+
         float currentVelocity = JumpVelocity;
 
         if (EnemyBody.LinearVelocity.Dot(EnemyBody.DesiredVelocity) < 0)
@@ -198,6 +216,7 @@ public partial class LimbPlacementController : Node
         }
 
         EnemyBody.ApplyImpulse((DesiredDirection * currentVelocity + (Vector3.Up * StepBouncePower)) - EnemyBody.LinearVelocity, EnemyBody.ToLocal(targetPoint));
+
     }
 
 

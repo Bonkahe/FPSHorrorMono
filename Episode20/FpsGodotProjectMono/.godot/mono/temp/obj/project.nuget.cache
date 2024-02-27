@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "ujqvgLoUetg09emTxfznhBKZkFZY2TKMMIDrj+bze2ZMDNWud6qYNItXypG3kHLc7yrNY9Ixsno4W9dmkA958Q==",
+  "success": true,
+  "projectFilePath": "F:\\WORKSPACE-BACKEDUP\\GODOTPROJECTS\\1-EDUCATIONAL\\PROCANIMSHOOTER\\FPSGODOTPROJECTMONO\\FpsGodotProject.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bonka\\.nuget\\packages\\godot.sourcegenerators\\4.1.0\\godot.sourcegenerators.4.1.0.nupkg.sha512",
+    "C:\\Users\\bonka\\.nuget\\packages\\godotsharp\\4.1.0\\godotsharp.4.1.0.nupkg.sha512",
+    "C:\\Users\\bonka\\.nuget\\packages\\godotsharpeditor\\4.1.0\\godotsharpeditor.4.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}

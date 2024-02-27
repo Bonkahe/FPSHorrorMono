@@ -1,0 +1,112 @@
+[gd_scene load_steps=20 format=3 uid="uid://clxx6psfl5py8"]
+
+[ext_resource type="Script" path="res://Code/PlayerBodyController.cs" id="1_ihx5p"]
+[ext_resource type="PackedScene" uid="uid://cbkuu0rnihxcb" path="res://ScenePrefabs/ArmsPrefab.tscn" id="2_rc0bo"]
+[ext_resource type="AudioStream" uid="uid://jmhaydx8yumc" path="res://Audio/Footsteps/JumpStop 3-Gravel.wav" id="2_sbxjn"]
+[ext_resource type="PackedScene" uid="uid://b1q5ius1kk33c" path="res://ScenePrefabs/Effects/DustMotes.tscn" id="3_04eyl"]
+[ext_resource type="AudioStream" uid="uid://cjgi0v3hge0pn" path="res://Audio/Footsteps/JumpStop 4-Gravel.wav" id="3_da4mv"]
+[ext_resource type="Texture2D" uid="uid://b1ngdud80jh3a" path="res://Textures/Arms/Flashlight_Cookie.png" id="3_nxlkg"]
+[ext_resource type="AudioStream" uid="uid://byqqgmalv0you" path="res://Audio/Footsteps/JumpStop 5-Gravel.wav" id="4_hjrvo"]
+[ext_resource type="Script" path="res://Code/Enemies/DamageableObject.cs" id="5_cpnlc"]
+[ext_resource type="AudioStream" uid="uid://bc56y80j3e74s" path="res://Audio/Footsteps/JumpStop 6-Gravel.wav" id="5_rnrrj"]
+[ext_resource type="Material" uid="uid://bh7tilovklono" path="res://Materials/Player/DamageOverlayMaterial.tres" id="6_1udx5"]
+[ext_resource type="Script" path="res://Code/Player/PlayerHealthController.cs" id="6_ik2xe"]
+[ext_resource type="AudioStream" uid="uid://lswsxtj5qqdy" path="res://Audio/Footsteps/JumpStop 7-Gravel.wav" id="6_yxndr"]
+[ext_resource type="AudioStream" uid="uid://r60j333ha0qm" path="res://Audio/Player/PC_Hurt_01.wav" id="7_hlr1y"]
+[ext_resource type="AudioStream" uid="uid://baj6tx3xikrck" path="res://Audio/Player/PC_Hurt_02.wav" id="8_kikt3"]
+[ext_resource type="AudioStream" uid="uid://bsceveubgp3g0" path="res://Audio/Player/PC_Hurt_03.wav" id="9_mg1yv"]
+[ext_resource type="AudioStream" uid="uid://bs45dd6pfpqq0" path="res://Audio/Player/PC_Hurt_04.wav" id="10_rl27t"]
+[ext_resource type="AudioStream" uid="uid://x12xtt6icygh" path="res://Audio/Player/PC_Death_Sound.wav" id="11_sbfom"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_q62kd"]
+frequency = 0.0999
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uioy7"]
+
+[node name="PlayerBody" type="CharacterBody3D" node_paths=PackedStringArray("GunEffects", "CameraNode", "CameraActual", "ArmsNode", "AnimationTree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.28412, 0.668381, 0)
+collision_layer = 2
+collision_mask = 9
+floor_max_angle = 1.0472
+script = ExtResource("1_ihx5p")
+GunEffects = NodePath("ArmsContainer/ArmsMesh/WeaponEffectsController")
+CameraNode = NodePath("CameraContainer")
+CameraActual = NodePath("CameraContainer/Camera3D")
+ArmsNode = NodePath("ArmsContainer")
+AnimationTree = NodePath("ArmsContainer/ArmsMesh/AnimationTree")
+HandStateMachinePlaybackPath = "parameters/playback"
+IdleAnimationName = "LowIdle"
+AimingAnimationName = "AimingIdle"
+IdleFireAnimationName = "Lowfire"
+AimingFireAnimationName = "Aimingfire"
+IdleReloadAnimationName = "Lowreload"
+AimingReloadAnimationName = "Aimingreload"
+FootstepSounds = [ExtResource("2_sbxjn"), ExtResource("3_da4mv"), ExtResource("4_hjrvo"), ExtResource("5_rnrrj"), ExtResource("6_yxndr")]
+CameraShake_Noise = SubResource("FastNoiseLite_q62kd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_uioy7")
+
+[node name="ArmsContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+
+[node name="ArmsMesh" parent="ArmsContainer" instance=ExtResource("2_rc0bo")]
+
+[node name="RevolverBarrelAttachment" parent="ArmsContainer/ArmsMesh/Player_Rig/Skeleton3D" index="14"]
+transform = Transform3D(0.99989, 0.0143319, -0.00384878, -0.0143209, 0.999893, 0.00288108, 0.00388987, -0.00282595, 0.999988, 0.190275, -0.207155, -0.657797)
+
+[node name="RevolverCylinderAttachment" parent="ArmsContainer/ArmsMesh/Player_Rig/Skeleton3D" index="15"]
+transform = Transform3D(0.99989, -0.00384927, -0.0143314, -0.0143204, 0.00288144, -0.999893, 0.00389037, 0.999988, 0.0028263, 0.190494, -0.18648, -0.637994)
+
+[node name="LeftHandItemAttachment" parent="ArmsContainer/ArmsMesh/Player_Rig/Skeleton3D" index="16"]
+transform = Transform3D(0.906764, 0.268, -0.325509, 0.336878, 0.0037722, 0.941541, 0.253561, -0.963411, -0.0868628, -0.288682, -0.452939, -0.307122)
+
+[node name="Flashlight" parent="ArmsContainer/ArmsMesh/Player_Rig/Skeleton3D/LeftHandItemAttachment/FlashlightMesh" index="3"]
+transform = Transform3D(1, -3.76254e-07, -1.49012e-08, -8.9407e-08, 2.98023e-08, -1, 1.49012e-08, 1, 2.23517e-08, 2.38419e-07, 0.167438, 1.49012e-07)
+light_color = Color(0.94902, 0.796078, 0.682353, 1)
+light_energy = 3.0
+light_projector = ExtResource("3_nxlkg")
+
+[node name="WeaponEffectsController" parent="ArmsContainer/ArmsMesh" index="3" node_paths=PackedStringArray("PlayerBodyNode", "CameraNode")]
+PlayerBodyNode = NodePath("../../..")
+ImpactForce = 100.0
+CameraNode = NodePath("../../../CameraContainer")
+
+[node name="CameraContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraContainer"]
+current = true
+fov = 70.0
+
+[node name="DustMotes" parent="." instance=ExtResource("3_04eyl")]
+
+[node name="Damageable" type="Node" parent="."]
+script = ExtResource("5_cpnlc")
+
+[node name="PlayerHealthController" type="Node" parent="." node_paths=PackedStringArray("PlayerCamera", "PlayerBody")]
+process_mode = 3
+script = ExtResource("6_ik2xe")
+HurtSounds = [ExtResource("7_hlr1y"), ExtResource("8_kikt3"), ExtResource("9_mg1yv"), ExtResource("10_rl27t")]
+PlayerDeathSound = ExtResource("11_sbfom")
+PlayerCamera = NodePath("../CameraContainer/Camera3D")
+PlayerBody = NodePath("..")
+DamageEffectMaterial = ExtResource("6_1udx5")
+HealthTotal = 4.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DamageOverlay" type="ColorRect" parent="CanvasLayer"]
+material = ExtResource("6_1udx5")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[connection signal="OnShotCameraImpulse" from="ArmsContainer/ArmsMesh/WeaponEffectsController" to="." method="ImpulseCameraWithRecoil"]
+[connection signal="OnDamage" from="Damageable" to="PlayerHealthController" method="OnDamaged"]
+
+[editable path="ArmsContainer/ArmsMesh"]
+[editable path="ArmsContainer/ArmsMesh/Player_Rig/Skeleton3D/LeftHandItemAttachment/FlashlightMesh"]
